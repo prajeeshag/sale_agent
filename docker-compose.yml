@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      INDEX_PATH: /data/index.faiss
+      ID_MAP_PATH: /data/id_map.json
+    volumes:
+      # DATA_DIR must be set in .env to an absolute path on the host, e.g.:
+      #   DATA_DIR=/home/user/sale-agent-data
+      - ${DATA_DIR}:/data
+      - hf_cache:/root/.cache/huggingface
+
+volumes:
+  hf_cache:

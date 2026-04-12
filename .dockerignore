@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.uv/
+
+# Data files — served from Docker volume, not baked into image
+index.faiss
+id_map.json
+catalogue.json
+images/
+
+# Dev / test artefacts
+.env
+tests/
+*.jpeg
+*.jpg
+*.png
+
+# Git
+.git/
+.gitignore
+
+# Misc
+README.md
+Makefile
