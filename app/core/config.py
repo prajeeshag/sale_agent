@@ -1,13 +1,14 @@
+import typing as t
 from pathlib import Path
 
 from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    debug: bool = False   # set True locally to skip webhook signature validation
+    debug: bool = False  # set True locally to skip webhook signature validation
 
     # Provider selector: "meta" | "twilio"
-    whatsapp_provider: str = "meta"
+    whatsapp_provider: t.Literal["meta", "twilio"] = "twilio"
 
     # Meta WhatsApp Cloud API
     whatsapp_token: str = ""
@@ -18,7 +19,7 @@ class Settings(BaseSettings):
     # Twilio WhatsApp
     twilio_account_sid: str = ""
     twilio_auth_token: str = ""
-    twilio_whatsapp_number: str = ""   # E.164, e.g. "+14155238886"
+    twilio_whatsapp_number: str = ""  # E.164, e.g. "+14155238886"
 
     # Shopify
     shopify_shop: str = ""

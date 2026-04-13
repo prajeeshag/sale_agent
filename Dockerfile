@@ -19,10 +19,10 @@ COPY app/     ./app/
 COPY scripts/ ./scripts/
 
 # Pre-download CLIP model weights so the first request isn't slow
-RUN uv run python -c "\
-from transformers import CLIPModel, CLIPProcessor; \
-CLIPModel.from_pretrained('openai/clip-vit-base-patch32'); \
-CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32')"
+#RUN uv run python -c "\
+#from transformers import CLIPModel, CLIPProcessor; \
+#CLIPModel.from_pretrained('openai/clip-vit-base-patch32'); \
+#CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32')"
 
 EXPOSE 8000
 
