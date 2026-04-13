@@ -28,30 +28,32 @@ async def verify(request: Request):
 @router.post("")
 async def receive(request: Request):
     provider = get_provider()
-    images   = await provider.parse_images(request)
+    images = await provider.parse_images(request)
 
     for image in images:
         try:
             image_bytes = await provider.get_media_bytes(image.media_ref)
         except Exception as exc:
             log.error("Failed to download media for %s: %s", image.sender, exc)
-            await provider.send_text(image.sender, "Sorry, I couldn't process your image. Please try again.")
+            await provider.send_text(
+                image.sender, "Sorry, I couldn't process your image. Please try again."
+            )
             continue
 
         searcher = search_service.get_searcher()
-        results  = searcher.search(image_bytes, top_k=1)
+        results = searcher.search(image_bytes, top_k=3)
 
         if not results:
             await provider.send_text(image.sender, "No matching products found.")
             continue
 
-        r     = results[0]
-        reply = (
-            f"Best match ({r.similarity:.0%} similarity)\n\n"
-            f"*{r.name}*\n"
-            f"{r.currency} {r.price} | {'In stock' if r.available else 'Out of stock'}\n"
-            f"{r.product_url}"
-        )
-        await provider.send_text(image.sender, reply)
+        lines = ["Top matches:"]
+        for i, r in enumerate(results, 1):
+            lines.append(
+                f"\n*{i}. {r.name}* ({r.similarity:.0%} similarity)\n"
+                f"{r.currency} {r.price} | {'In stock' if r.available else 'Out of stock'}\n"
+                f"{r.product_url}"
+            )
+        await provider.send_text(image.sender, "\n".join(lines))
 
     return {"status": "ok"}
