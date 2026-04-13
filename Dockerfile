@@ -16,7 +16,6 @@ RUN uv sync --frozen --no-dev --no-install-project
 
 # Copy source
 COPY app/     ./app/
-COPY scripts/ ./scripts/
 
 # Pre-download CLIP model weights so the first request isn't slow
 #RUN uv run python -c "\
